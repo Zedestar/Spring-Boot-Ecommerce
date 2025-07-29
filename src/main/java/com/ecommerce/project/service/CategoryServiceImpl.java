@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -28,14 +29,27 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public String deleteCategory(Long categoryId){
+    public String deleteCategory(Long categoryId) {
         Category categoryToDelete =
-                categories.stream().filter((item)->item.getCategoryId().equals(categoryId)).findFirst().orElse(null);
-        if(categoryToDelete != null){
-        categories.remove(categoryToDelete);
-        return "The selected category was deleted successfully";
+                categories.stream().filter((item) -> item.getCategoryId().equals(categoryId)).findFirst().orElse(null);
+        if (categoryToDelete != null) {
+            categories.remove(categoryToDelete);
+            return "The selected category was deleted successfully";
+        } else {
+            return "The category was not found";
+        }
+    }
+
+    @Override
+    public String updateCategory(Long categoryId, Category category){
+        Category categoryToUpdate =
+                categories.stream().filter((item) -> item.getCategoryId().equals(categoryId)).findFirst().orElse(null);
+        if(categoryToUpdate != null){
+            categoryToUpdate.setCategoryName(category.getCategoryName());
+            return "The selected category was updated successfully";
         }else{
             return "The category was not found";
         }
     }
+
 }

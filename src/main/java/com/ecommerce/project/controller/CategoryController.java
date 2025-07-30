@@ -39,20 +39,13 @@ public class CategoryController {
     @DeleteMapping("/admin/categories/{categoryId}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId){
         String message = categoryService.deleteCategory(categoryId);
-        if(message.equals("The category was not found")){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }else{
-            return ResponseEntity.ok(message);
-        }
+        return ResponseEntity.ok(message);
     }
 
     @PutMapping("/admin/categories/{categoryId}")
     public ResponseEntity<Category> updateCategory(@PathVariable Long categoryId, @RequestBody Category category){
-        String updatingStatusMessage = categoryService.updateCategory(categoryId, category);
-        if(updatingStatusMessage.equals("The category was not found")){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(category);
-        }else{
-            return ResponseEntity.ok(category);
-        }
+         categoryService.updateCategory(categoryId, category);
+         return ResponseEntity.ok(category);
+
     }
 }

@@ -32,7 +32,6 @@ public class CategoryController {
     @PostMapping("/admin/categories")
     public ResponseEntity<Category> addCategory(@Valid @RequestBody Category category){
           return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(category));
-//        return categoryService.createCategory(category);
     }
 
 

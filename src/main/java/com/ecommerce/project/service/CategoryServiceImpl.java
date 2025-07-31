@@ -1,5 +1,6 @@
 package com.ecommerce.project.service;
 
+import com.ecommerce.project.exceptions.ItemAlreadyExistException;
 import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.repositories.CategoryRepository;
@@ -22,20 +23,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
+        Category newCategory=categoryRepository.findByCategoryName(category.getCategoryName());
+        if(newCategory != null)
+            throw new ItemAlreadyExistException("The category " + category.getCategoryName() + " already exists");
         categoryRepository.save(category);
         return category;
     }
 
     @Override
     public String deleteCategory(Long categoryId) {
-//        Category categoryToDelete = categoryRepository.findById(categoryId).orElse(null);
-//        if (categoryToDelete != null) {
-//            categoryRepository.delete(categoryToDelete);
-//            return "The selected category was deleted successfully";
-//        }else {
-//            return "The category was not found";
-//        }
-
         Category categoryToDelete =
                 categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
         categoryRepository.delete(categoryToDelete);

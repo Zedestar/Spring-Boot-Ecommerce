@@ -52,12 +52,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String updateCategory(Long categoryId, Category category) {
+    public CategoryDTO updateCategory(Long categoryId, CategoryDTO categoryDTO) {
         Category categoryToUpdate = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
-        categoryToUpdate.setCategoryName(category.getCategoryName());
+        Category newCategory = modelMapper.map(categoryDTO, Category.class);
+        categoryToUpdate.setCategoryName(newCategory.getCategoryName());
         categoryRepository.save(categoryToUpdate);
-        return "The selected category was updated successfully";
-
+        return modelMapper.map(categoryToUpdate, CategoryDTO.class);
     }
 
 }

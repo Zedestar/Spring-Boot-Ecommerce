@@ -57,4 +57,6 @@ public class Product {
     @ManyToOne( cascade = CascadeType.PERSIST)
     @JoinColumn(name = "categoryId")
     private Category category;
+
+
 }

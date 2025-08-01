@@ -16,12 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class CategoryController {
 
+
+
     private CategoryService categoryService;
+
+
 
     @Autowired
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
+
 
 
     @GetMapping("/public/categories")
@@ -35,10 +40,13 @@ public class CategoryController {
         return categoryService.getAllCategories(pageNumber, pageSize, sortCategoriesBy, sortOrder);
     }
 
+
+
     @PostMapping("/admin/categories")
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(categoryDTO));
     }
+
 
 
     @DeleteMapping("/admin/categories/{categoryId}")
@@ -46,6 +54,8 @@ public class CategoryController {
         CategoryDTO categoryDeleted = categoryService.deleteCategory(categoryId);
         return ResponseEntity.ok(categoryDeleted);
     }
+
+
 
     @PutMapping("/admin/categories/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId, @RequestBody CategoryDTO categoryDTO) {

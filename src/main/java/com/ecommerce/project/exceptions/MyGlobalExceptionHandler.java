@@ -1,6 +1,7 @@
 package com.ecommerce.project.exceptions;
 
 
+import com.ecommerce.project.payload.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -33,14 +34,17 @@ public class MyGlobalExceptionHandler {
     }
 
     @ExceptionHandler(APIException.class)
-    public  ResponseEntity<String> myCategoryAlreadyExistException(APIException ex){
+    public  ResponseEntity<APIResponse> myCategoryAlreadyExistException(APIException ex){
         String message = ex.getMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+        APIResponse apiResponse = new APIResponse(message, false);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<String> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex){
+    public ResponseEntity<APIResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex){
+
         String paraName = ex.getParameterName();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Try adding this parameter and request again "+paraName);
+        APIResponse apiResponse = new APIResponse(paraName, false);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
 }

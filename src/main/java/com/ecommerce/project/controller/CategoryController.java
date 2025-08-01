@@ -27,9 +27,12 @@ public class CategoryController {
     @GetMapping("/public/categories")
     public CategoryResponse getAllCategories(
             @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(name = "sortCategoriesBy", defaultValue = AppConstants.SORT_CATEGORIES_BY, required = false) String sortCategoriesBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_ORDER, required = false) String sortOrder
+
     ) {
-        return categoryService.getAllCategories(pageNumber, pageSize);
+        return categoryService.getAllCategories(pageNumber, pageSize, sortCategoriesBy, sortOrder);
     }
 
     @PostMapping("/admin/categories")

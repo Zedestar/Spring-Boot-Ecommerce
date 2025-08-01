@@ -12,4 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CategoryResponse {
     List<CategoryDTO> content;
+    Integer pageNumber;
+    Integer pageSize;
+    Integer totalPages;
+    Long totalElements;
+    Boolean lastPage;
 }

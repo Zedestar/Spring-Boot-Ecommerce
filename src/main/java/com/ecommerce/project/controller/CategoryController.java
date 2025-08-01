@@ -24,8 +24,11 @@ public class CategoryController {
 
 
     @GetMapping("/public/categories")
-    public CategoryResponse getAllCategories() {
-        return categoryService.getAllCategories();
+    public CategoryResponse getAllCategories(
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize
+    ) {
+        return categoryService.getAllCategories(pageNumber, pageSize);
     }
 
     @PostMapping("/admin/categories")
@@ -35,9 +38,9 @@ public class CategoryController {
 
 
     @DeleteMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
-        String message = categoryService.deleteCategory(categoryId);
-        return ResponseEntity.ok(message);
+    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId) {
+        CategoryDTO categoryDeleted = categoryService.deleteCategory(categoryId);
+        return ResponseEntity.ok(categoryDeleted);
     }
 
     @PutMapping("/admin/categories/{categoryId}")

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -35,5 +36,11 @@ public class MyGlobalExceptionHandler {
     public  ResponseEntity<String> myCategoryAlreadyExistException(APIException ex){
         String message = ex.getMessage();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<String> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex){
+        String paraName = ex.getParameterName();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Try adding this parameter and request again "+paraName);
     }
 }

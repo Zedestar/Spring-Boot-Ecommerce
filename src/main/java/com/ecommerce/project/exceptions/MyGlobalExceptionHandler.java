@@ -2,6 +2,7 @@ package com.ecommerce.project.exceptions;
 
 
 import com.ecommerce.project.payload.APIResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,7 +16,6 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class MyGlobalExceptionHandler {
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
         Map<String, String> response = new HashMap<>();
@@ -24,6 +24,14 @@ public class MyGlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             response.put(errorName, errorMessage);
         });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex){
+        Map<String, String> response = new HashMap<>();
+        ex.getConstraintViolations().forEach((error)->
+                response.put(error.getPropertyPath().toString(), error.getMessage()));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 

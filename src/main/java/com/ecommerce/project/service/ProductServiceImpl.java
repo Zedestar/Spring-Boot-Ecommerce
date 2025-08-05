@@ -34,4 +34,10 @@ public class ProductServiceImpl implements ProductService{
         productResponse.setContent(productListDTO);
         return productResponse;
     }
+
+    @Override
+    public ProductDTO createProduct(ProductDTO productDTO) {
+        Product productToAdd =productRepository.save(modelMapper.map(productDTO, Product.class));
+        return modelMapper.map(productToAdd, ProductDTO.class);
+    }
 }

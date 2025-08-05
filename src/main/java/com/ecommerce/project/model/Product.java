@@ -22,7 +22,7 @@ public class Product {
 
     @NotBlank(message = "Product name should not be empty")
     @Size(min=5, max = 255, message = "Name of the product should be between 5 and 255" )
-    private String productName;
+    private String name;
 
 
     @NotBlank(message = "Product description should not be empty")
@@ -57,6 +57,7 @@ public class Product {
     @ManyToOne( cascade = CascadeType.PERSIST)
     @JoinColumn(name = "categoryId")
     private Category category;
+
 
 
 }

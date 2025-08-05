@@ -5,5 +5,6 @@ import com.ecommerce.project.payload.ProductResponse;
 
 public interface ProductService {
     ProductResponse getAllProducts();
-    ProductDTO createProduct(ProductDTO productDTO);
+    ProductDTO createProduct(Long categoryId, ProductDTO productDTO);
+    ProductDTO deleteProduct(Long productId);
 }

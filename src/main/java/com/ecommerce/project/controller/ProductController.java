@@ -26,9 +26,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(productService.getAllProducts());
     }
 
-    @PostMapping("/admin/add-product")
-    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(productDTO));
+    @PostMapping("/admin/{categoryId}/add-product")
+    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO, @PathVariable Long categoryId) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(categoryId, productDTO));
+    }
+
+    @DeleteMapping("/admin/delete/{productId}")
+    public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long productId){
+        return ResponseEntity.ok(productService.deleteProduct(productId));
     }
 
 }

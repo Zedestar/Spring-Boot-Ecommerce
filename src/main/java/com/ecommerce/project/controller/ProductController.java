@@ -7,8 +7,12 @@ import com.ecommerce.project.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
@@ -28,9 +32,15 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(productService.getAllProducts(productName, productCategoryId));
     }
 
-    @PostMapping("/admin/{categoryId}/add-product")
-    public ResponseEntity<ProductDTO> addProduct(@Valid @RequestBody ProductDTO productDTO, @PathVariable Long categoryId) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(categoryId, productDTO));
+    @PostMapping(value = "/admin/{categoryId}/add-product",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductDTO> addProduct(
+            @Valid
+            @RequestPart("productDTO") ProductDTO productDTO,
+            @RequestPart("file") MultipartFile file,
+            @PathVariable Long categoryId
+        ) throws IOException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(categoryId, productDTO, file));
     }
 
     @DeleteMapping("/admin/delete/{productId}")

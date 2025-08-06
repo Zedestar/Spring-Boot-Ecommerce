@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### IGNORING THE DATABASE ###
+/data/*.mv.db
+/data/*.trace.db

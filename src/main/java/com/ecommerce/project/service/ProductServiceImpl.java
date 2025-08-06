@@ -30,8 +30,16 @@ public class ProductServiceImpl implements ProductService{
 
 
     @Override
-    public ProductResponse getAllProducts(){
-        List<Product> products = productRepository.findAll();
+    public ProductResponse getAllProducts(String productName, Long productCategoryId) {
+        List<Product> products;
+        if (productCategoryId != null) {
+            Category category = categoryRepository.findById(productCategoryId).orElseThrow(()-> new ResourceNotFoundException("Category", "with", productCategoryId));
+            products = productRepository.findByCategory(category);
+        } else if (productName != null) {
+            products = productRepository.findByNameLikeIgnoreCase( '%' + productName + '%');
+        } else {
+            products = productRepository.findAll();
+        }
         if(products.isEmpty()){
             throw new APIException("No product found");
         }
@@ -56,5 +64,16 @@ public class ProductServiceImpl implements ProductService{
         Product productToDelete = productRepository.findById(productId).orElseThrow( () -> new ResourceNotFoundException("Product", "with", productId));
         productRepository.delete(productToDelete);
         return modelMapper.map(productToDelete, ProductDTO.class);
+    }
+
+
+//    THis one is not working effectively, it adds instead of updating
+    @Override
+    public ProductDTO updateProduct(Long productId, ProductDTO productDTO){
+      Product productToUpdate = productRepository.findById(productId).orElseThrow(()-> new ResourceNotFoundException("Product", "with", productId));
+      Product newProduct = modelMapper.map(productDTO, productToUpdate.getClass());
+      productRepository.save(newProduct);
+      return modelMapper.map(newProduct, ProductDTO.class);
+
     }
 }

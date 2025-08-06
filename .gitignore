@@ -36,3 +36,7 @@ build/
 ### IGNORING THE DATABASE ###
 /data/*.mv.db
 /data/*.trace.db
+
+
+### IGNORING THE IMAGE ###
+/images

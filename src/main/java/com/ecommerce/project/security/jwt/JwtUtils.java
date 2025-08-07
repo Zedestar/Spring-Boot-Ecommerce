@@ -23,7 +23,7 @@ public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${spring.app.expiration-ms}")
-    private int jwtExpirationMs;
+    private long jwtExpirationMs;
 
     @Value("${spring.app.secret}")
     private String jwtSecret;

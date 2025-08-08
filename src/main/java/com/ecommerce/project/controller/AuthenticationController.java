@@ -26,11 +26,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
-
     private AuthenticationManager authenticationManager;
+    private JwtUtils jwtUtils;
 
     @Autowired
-    private JwtUtils jwtUtils;
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtils jwtUtils){
+        this.authenticationManager = authenticationManager;
+        this.jwtUtils = jwtUtils;
+    }
 
 
 

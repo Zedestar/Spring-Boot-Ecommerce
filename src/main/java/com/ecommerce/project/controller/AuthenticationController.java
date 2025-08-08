@@ -50,9 +50,9 @@ public class AuthenticationController {
             );
         }catch (AuthenticationException exception){
             final Map<String, String> map = new HashMap<>();
-            map.put("message", "Bad credentials");
+            map.put("message", "Bad credentialssss");
             map.put("error", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();

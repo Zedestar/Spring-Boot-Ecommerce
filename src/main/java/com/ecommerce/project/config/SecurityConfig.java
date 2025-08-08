@@ -56,10 +56,11 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(){
         UserDetails user1 = User
-                .withUsername("Agi")
-                .password("{noop}abi123")
+                .withUsername("abi")
+                .password(passwordEncoder().encode("abi123"))
                 .roles("ADMIN")
                 .build();
+        System.out.println("###################################User created successfully#########################################");
         return new InMemoryUserDetailsManager(user1);
     }
 
@@ -68,7 +69,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((requests) ->
                 requests
-                        .requestMatchers("/api/auth").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
         );
         http.sessionManagement(session ->

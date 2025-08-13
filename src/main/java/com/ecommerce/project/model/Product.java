@@ -59,5 +59,11 @@ public class Product {
     private Category category;
 
 
+//    Establishing the relationship with User, user marked as the seller
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "sellerId")
+    private User seller;
+
+
 
 }

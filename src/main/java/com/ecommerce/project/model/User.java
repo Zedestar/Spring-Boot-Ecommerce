@@ -43,8 +43,10 @@ public class User {
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "roleId")
-    )
+            inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "seller", orphanRemoval = true)
+    private Set<Product> products = new HashSet<>();
 
 }

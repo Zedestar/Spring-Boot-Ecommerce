@@ -49,4 +49,7 @@ public class User {
     @OneToMany(mappedBy = "seller", orphanRemoval = true)
     private Set<Product> products = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<Address>  addresses = new HashSet<>();
+
 }

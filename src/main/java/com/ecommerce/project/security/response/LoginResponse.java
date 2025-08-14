@@ -1,4 +1,4 @@
-package com.ecommerce.project.security.jwt;
+package com.ecommerce.project.security.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LoginResponse {
     private String jwtToken;
+    private Long userId;
     private String username;
     private List<String> roles;
 

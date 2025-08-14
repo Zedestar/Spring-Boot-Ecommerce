@@ -67,16 +67,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails user1 = User
-                .withUsername("abi")
-                .password(passwordEncoder().encode("abi123"))
-                .roles("ADMIN")
-                .build();
-        System.out.println("###################################User created successfully#########################################");
-        return new InMemoryUserDetailsManager(user1);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        UserDetails user1 = User
+//                .withUsername("abi")
+//                .password(passwordEncoder().encode("abi123"))
+//                .roles("ADMIN")
+//                .build();
+//        System.out.println("###################################User created successfully#########################################");
+//        return new InMemoryUserDetailsManager(user1);
+//    }
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {

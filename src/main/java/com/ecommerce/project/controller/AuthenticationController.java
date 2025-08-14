@@ -2,8 +2,9 @@ package com.ecommerce.project.controller;
 
 
 import com.ecommerce.project.security.jwt.JwtUtils;
-import com.ecommerce.project.security.jwt.LoginRequest;
-import com.ecommerce.project.security.jwt.LoginResponse;
+import com.ecommerce.project.security.request.LoginRequest;
+import com.ecommerce.project.security.response.LoginResponse;
+import com.ecommerce.project.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,12 +54,13 @@ public class AuthenticationController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(map);
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String theToken = jwtUtils.generateTokenFromUserName(userDetails);
+        Long userId = userDetails.getUserId();
         String userName = userDetails.getUsername();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map((item) -> item.getAuthority()).toList();
-        LoginResponse loginResponse = new LoginResponse(theToken, userName, roles);
+        LoginResponse loginResponse = new LoginResponse(theToken, userId, userName, roles);
         return ResponseEntity.ok(loginResponse);
     }
 }

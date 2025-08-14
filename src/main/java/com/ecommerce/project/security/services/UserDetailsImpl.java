@@ -16,14 +16,10 @@ public class UserDetailsImpl implements UserDetails {
 
 
     private Long userId;
-
     private String username;
-
     private String email;
-
     @JsonIgnore
     private String password;
-
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long userId, String username, String email, String password,

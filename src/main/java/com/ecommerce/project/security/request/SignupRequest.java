@@ -24,4 +24,9 @@ public class SignupRequest {
     @NotBlank(message = "Provide password to continue")
     @Size(min = 6, message = "Password should contain at least 6 characters")
     private String password;
+
+
+    @NotBlank
+    @Size(max = 10, message = "The user role size must not exceed 10")
+    private String userRole;
 }

@@ -49,14 +49,17 @@ public class UserServiceImpl implements UserService{
                 Role adminRole = roleRepository.findByRoleName(AppRole.valueOf("ROLE_ADMIN"))
                         .orElseThrow(()-> new APIException("the role admin is not found"));
                newUser.setRoles(Set.of(adminRole));
+               break;
             case "seller":
                 Role sellerRole = roleRepository.findByRoleName(AppRole.valueOf("ROLE_SELLER"))
                         .orElseThrow(()-> new APIException("the role admin is not found"));
                 newUser.setRoles(Set.of(sellerRole));
+                break;
             default:
                 Role theUserRole = roleRepository.findByRoleName(AppRole.valueOf("ROLE_USER"))
                         .orElseThrow(()-> new APIException("the role admin is not found"));
                 newUser.setRoles(Set.of(theUserRole));
+                break;
 
         }
         userRepository.save(newUser);

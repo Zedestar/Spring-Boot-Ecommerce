@@ -6,12 +6,14 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.WebUtils;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -28,14 +30,32 @@ public class JwtUtils {
     @Value("${spring.app.secret}")
     private String jwtSecret;
 
-    // Getting the JWT for the headers
-    public String getJwtFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        logger.debug("Bearer Token: {}", bearerToken);
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+
+    @Value("${spring.app.jwtCookieName}")
+    private String jwtCookie;
+
+//    //This was the method that used in Bear Token authorization, token when token embedded to the request
+//    //This is not used while dealing with cookies Jwt token, therefore will be commented out
+//    // Getting the JWT for the headers
+//    public String getJwtFromHeader(HttpServletRequest request) {
+//        String bearerToken = request.getHeader("Authorization");
+//        logger.debug("Bearer Token: {}", bearerToken);
+//        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+//            return bearerToken.substring(7);
+//        }
+//        return null;
+//    }
+
+
+    //This is the method that will be extracting the cooking from the requst
+
+    public String jwtGetCookies(HttpServletRequest request){
+        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
+        if(cookie != null){
+            return cookie.getValue();
+        }else{
+            return null;
         }
-        return null;
     }
 
     // Generating the Token from the username

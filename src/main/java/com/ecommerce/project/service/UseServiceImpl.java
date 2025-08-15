@@ -7,15 +7,17 @@ import com.ecommerce.project.model.User;
 import com.ecommerce.project.repositories.RoleRepository;
 import com.ecommerce.project.repositories.UserRepository;
 import com.ecommerce.project.security.request.SignupRequest;
+import com.ecommerce.project.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UseServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
@@ -64,5 +66,11 @@ public class UserServiceImpl implements UserService{
         }
         userRepository.save(newUser);
         return "The account is successfully created";
+    }
+
+    @Override
+    public UserDetailsImpl gettingUserInformation() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserDetailsImpl)  authentication.getPrincipal();
     }
 }

@@ -6,6 +6,7 @@ import com.ecommerce.project.security.request.LoginRequest;
 import com.ecommerce.project.security.request.SignupRequest;
 import com.ecommerce.project.security.response.LoginResponse;
 import com.ecommerce.project.security.services.UserDetailsImpl;
+//com.ecommerce.project.service.UserDetailsImpl
 import com.ecommerce.project.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -77,5 +75,10 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public ResponseEntity<String> registeringUser(@Valid @RequestBody SignupRequest signupRequest){
         return ResponseEntity.ok(userService.SigningUp(signupRequest));
+    }
+
+    @GetMapping("/user/info")
+    public ResponseEntity<UserDetailsImpl> gettingUserInformation(){
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.gettingUserInformation());
     }
 }

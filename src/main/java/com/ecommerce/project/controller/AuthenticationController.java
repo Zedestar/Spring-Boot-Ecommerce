@@ -81,4 +81,13 @@ public class AuthenticationController {
     public ResponseEntity<UserDetailsImpl> gettingUserInformation(){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.gettingUserInformation());
     }
+
+    @GetMapping("/signout")
+    public ResponseEntity<?> signingOut(){
+        ResponseCookie cookieToClean = jwtUtils.cleanJwtCookie();
+        return ResponseEntity.
+                ok()
+                .header(HttpHeaders.SET_COOKIE, cookieToClean.toString())
+                .body("You have successfully logged out");
+    }
 }

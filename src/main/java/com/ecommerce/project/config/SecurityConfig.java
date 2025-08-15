@@ -83,7 +83,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((requests) ->
                 requests
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("//api/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
         );
@@ -109,8 +109,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web -> web.ignoring().requestMatchers(
-                "api/auth/**"
+                "/api/auth/**"
         ));
     }
-
 }

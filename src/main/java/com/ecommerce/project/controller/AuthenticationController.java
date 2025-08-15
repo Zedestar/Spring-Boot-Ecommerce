@@ -3,8 +3,11 @@ package com.ecommerce.project.controller;
 
 import com.ecommerce.project.security.jwt.JwtUtils;
 import com.ecommerce.project.security.request.LoginRequest;
+import com.ecommerce.project.security.request.SignupRequest;
 import com.ecommerce.project.security.response.LoginResponse;
 import com.ecommerce.project.security.services.UserDetailsImpl;
+import com.ecommerce.project.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +30,13 @@ import java.util.Map;
 public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
+    private UserService userService;
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtils jwtUtils){
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserService userService){
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+        this.userService = userService;
     }
 
 
@@ -62,5 +67,10 @@ public class AuthenticationController {
                 .map((item) -> item.getAuthority()).toList();
         LoginResponse loginResponse = new LoginResponse(theToken, userId, userName, roles);
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> registeringUser(@Valid @RequestBody SignupRequest signupRequest){
+        return ResponseEntity.ok(userService.SigningUp(signupRequest));
     }
 }

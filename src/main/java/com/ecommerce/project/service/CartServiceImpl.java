@@ -6,6 +6,7 @@ import com.ecommerce.project.model.CartItem;
 import com.ecommerce.project.model.Product;
 import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.CartDTO;
+import com.ecommerce.project.payload.CartItemDTO;
 import com.ecommerce.project.repositories.CartItemRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.ProductRepository;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -76,10 +78,10 @@ public class CartServiceImpl implements CartService{
              userCart.getCartItems().add(cartItem);
          }
 
+        List<CartItemDTO> cartItemDTOS = userCart.getCartItems().stream()
+                .map(cartItem-> modelMapper.map(cartItem, CartItemDTO.class)).toList();
 
 
-
-
-         return null;
+        return modelMapper.map(userCart, CartDTO.class);
     }
 }

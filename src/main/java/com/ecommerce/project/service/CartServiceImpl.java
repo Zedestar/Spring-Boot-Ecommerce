@@ -12,6 +12,7 @@ import com.ecommerce.project.repositories.CartItemRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.ProductRepository;
 import com.ecommerce.project.security.services.UserDetailsImpl;
+import com.ecommerce.project.utils.GetAuthenticatedUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -134,6 +135,22 @@ public class CartServiceImpl implements CartService{
         ).toList();
     }
 
+    @Override
+    public List<CartDTO> getUserCartList() {
+        User loggedUser = GetAuthenticatedUser.loggedInUser();
+        List<Cart> cartList = cartRepository.findAllByUser_UserId(loggedUser.getUserId())
+                .orElseThrow(()->  new APIException("There is not cart found"));
 
+        return cartList.stream().map(
+                cart->{
+                    CartDTO cartDTO = new CartDTO();
+                    cartDTO.setCartId(cart.getCartId());
+                    cartDTO.setUserDTO(modelMapper.map(cart.getUser(), UserDTO.class));
+                    cartDTO.setCartItemDTOList(changingCartItemToDTO(cart));
+                    cartDTO.setTotalPrice(gettingTotalCartPrice(cart));
+                    return cartDTO;
+                }
+        ).toList();
+    }
 
 }

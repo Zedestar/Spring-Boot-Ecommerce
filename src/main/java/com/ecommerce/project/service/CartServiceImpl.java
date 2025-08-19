@@ -19,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +43,8 @@ public class CartServiceImpl implements CartService{
                     theDTOCartITem.setCartItemId(cartItem.getCartItemId());
                     theDTOCartITem.setProductName(cartItem.getProduct().getName());
                     theDTOCartITem.setProductImage(cartItem.getProduct().getImage());
-                    theDTOCartITem.setProductPrice(cartItem.getProductPrice());
+                    theDTOCartITem.setProductPrice(cartItem.getProduct().getPrice());
+                    theDTOCartITem.setCartItePrice(cartItem.getProductPrice());
                     theDTOCartITem.setQuantity(cartItem.getQuantity());
                     theDTOCartITem.setDiscount(cartItem.getDiscount());
                     return theDTOCartITem;

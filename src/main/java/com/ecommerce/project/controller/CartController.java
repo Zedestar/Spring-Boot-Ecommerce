@@ -1,6 +1,7 @@
 package com.ecommerce.project.controller;
 
 
+import com.ecommerce.project.model.Cart;
 import com.ecommerce.project.payload.CartDTO;
 import com.ecommerce.project.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class CartController {
 
     @PostMapping("/carts/products/{productId}/quantity/{quantity}")
     public ResponseEntity<CartDTO> addProductToCart(@PathVariable Long productId, @PathVariable Integer quantity){
-        CartDTO cartDTO = cartService.addProductsToCart(productId, quantity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cartDTO);
+//        CartDTO cartDTO = cartService.addProductsToCart(productId, quantity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cartService.addProductsToCart(productId, quantity));
     }
 }

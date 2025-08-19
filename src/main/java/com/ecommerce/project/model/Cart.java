@@ -1,6 +1,9 @@
 package com.ecommerce.project.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +25,7 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name = "userId")
+//    @JsonManagedReference
     private User user;
 
     @OneToMany(mappedBy = "cart", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.MERGE}, orphanRemoval = true)

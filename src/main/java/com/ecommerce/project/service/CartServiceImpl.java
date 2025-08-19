@@ -51,6 +51,15 @@ public class CartServiceImpl implements CartService{
         ).toList();
     }
 
+    private Double gettingTotalCartPrice(Cart cart){
+        return  cart.getCartItems().stream().map(cartItem ->
+        {
+            Double totalMoney = 0.0;
+            totalMoney += cartItem.getProductPrice();
+            return totalMoney;
+        }).mapToDouble(Double::doubleValue).sum();
+    }
+
 
 
 
@@ -95,26 +104,18 @@ public class CartServiceImpl implements CartService{
              cartItemRepository.save(cartItem);
              userCart.getCartItems().add(cartItem);
          }
-        changingCartItemToDTO(userCart);
 
-        Double cartTotalPrice = userCart.getCartItems().stream().map(cartItem ->
-             {
-                 Double totalMoney = 0.0;
-                 totalMoney += cartItem.getProductPrice();
-                 return totalMoney;
-             }).mapToDouble(Double::doubleValue).sum();
-
-        UserDTO userDTO = new UserDTO();
-        userDTO = modelMapper.map(user, UserDTO.class);
 
        CartDTO cartDTO = new CartDTO();
        cartDTO.setCartId(userCart.getCartId());
-       cartDTO.setUserDTO(userDTO);
+       cartDTO.setUserDTO(modelMapper.map(user, UserDTO.class));
        cartDTO.setCartItemDTOList(changingCartItemToDTO(userCart));
-       cartDTO.setTotalPrice(cartTotalPrice);
+       cartDTO.setTotalPrice(gettingTotalCartPrice(userCart));
 
         return cartDTO;
     }
+
+
 
 
 }

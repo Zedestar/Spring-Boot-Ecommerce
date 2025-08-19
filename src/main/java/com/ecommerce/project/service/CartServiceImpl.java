@@ -7,6 +7,7 @@ import com.ecommerce.project.model.Product;
 import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.CartDTO;
 import com.ecommerce.project.payload.CartItemDTO;
+import com.ecommerce.project.payload.UserDTO;
 import com.ecommerce.project.repositories.CartItemRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.ProductRepository;
@@ -99,9 +100,14 @@ public class CartServiceImpl implements CartService{
                  return totalMoney;
              }).mapToDouble(Double::doubleValue).sum();
 
-               CartDTO cartDTO = new CartDTO();
-               cartDTO.setCartItemDTOList(cartItemsDTOs);
-               cartDTO.setTotalPrice(cartTotalPrice);
+        UserDTO userDTO = new UserDTO();
+        userDTO = modelMapper.map(user, UserDTO.class);
+
+       CartDTO cartDTO = new CartDTO();
+       cartDTO.setCartId(userCart.getCartId());
+       cartDTO.setUserDTO(userDTO);
+       cartDTO.setCartItemDTOList(cartItemsDTOs);
+       cartDTO.setTotalPrice(cartTotalPrice);
 
         return cartDTO;
     }

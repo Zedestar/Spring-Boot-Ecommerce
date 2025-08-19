@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CartDTO {
     private Long cartId;
+    private UserDTO userDTO;
     private List<CartItemDTO> cartItemDTOList;
     private Double totalPrice = 0.0;
 

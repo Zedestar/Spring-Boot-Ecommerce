@@ -36,6 +36,21 @@ public class CartServiceImpl implements CartService{
     @Autowired
     ModelMapper modelMapper;
 
+    private List<CartItemDTO> changingCartItemToDTO(Cart cart) {
+        return cart.getCartItems().stream().map(cartItem ->
+                {
+                    CartItemDTO theDTOCartITem = new CartItemDTO();
+                    theDTOCartITem.setCartItemId(cartItem.getCartItemId());
+                    theDTOCartITem.setProductName(cartItem.getProduct().getName());
+                    theDTOCartITem.setProductImage(cartItem.getProduct().getImage());
+                    theDTOCartITem.setProductPrice(cartItem.getProductPrice());
+                    theDTOCartITem.setQuantity(cartItem.getQuantity());
+                    theDTOCartITem.setDiscount(cartItem.getDiscount());
+                    return theDTOCartITem;
+                }
+        ).toList();
+    }
+
 
 
 
@@ -80,20 +95,9 @@ public class CartServiceImpl implements CartService{
              cartItemRepository.save(cartItem);
              userCart.getCartItems().add(cartItem);
          }
-         List<CartItemDTO> cartItemsDTOs = userCart.getCartItems().stream().map(cartItem ->
-                 {
-                     CartItemDTO theDTOCartITem = new CartItemDTO();
-                     theDTOCartITem.setCartItemId(cartItem.getCartItemId());
-                     theDTOCartITem.setProductName(cartItem.getProduct().getName());
-                     theDTOCartITem.setProductImage(cartItem.getProduct().getImage());
-                     theDTOCartITem.setProductPrice(cartItem.getProductPrice());
-                     theDTOCartITem.setQuantity(cartItem.getQuantity());
-                     theDTOCartITem.setDiscount(cartItem.getDiscount());
-                     return theDTOCartITem;
-                 }
-                 ).toList();
+        changingCartItemToDTO(userCart);
 
-         Double cartTotalPrice = userCart.getCartItems().stream().map(cartItem ->
+        Double cartTotalPrice = userCart.getCartItems().stream().map(cartItem ->
              {
                  Double totalMoney = 0.0;
                  totalMoney += cartItem.getProductPrice();
@@ -106,9 +110,11 @@ public class CartServiceImpl implements CartService{
        CartDTO cartDTO = new CartDTO();
        cartDTO.setCartId(userCart.getCartId());
        cartDTO.setUserDTO(userDTO);
-       cartDTO.setCartItemDTOList(cartItemsDTOs);
+       cartDTO.setCartItemDTOList(changingCartItemToDTO(userCart));
        cartDTO.setTotalPrice(cartTotalPrice);
 
         return cartDTO;
     }
+
+
 }

@@ -44,7 +44,7 @@ public class CartServiceImpl implements CartService{
                     theDTOCartITem.setProductName(cartItem.getProduct().getName());
                     theDTOCartITem.setProductImage(cartItem.getProduct().getImage());
                     theDTOCartITem.setProductPrice(cartItem.getProduct().getPrice());
-                    theDTOCartITem.setCartItePrice(cartItem.getProductPrice());
+                    theDTOCartITem.setCartItePrice(cartItem.getCartProductPrice());
                     theDTOCartITem.setQuantity(cartItem.getQuantity());
                     theDTOCartITem.setDiscount(cartItem.getDiscount());
                     return theDTOCartITem;
@@ -56,7 +56,7 @@ public class CartServiceImpl implements CartService{
         return  cart.getCartItems().stream().map(cartItem ->
         {
             Double totalMoney = 0.0;
-            totalMoney += cartItem.getProductPrice();
+            totalMoney += cartItem.getCartProductPrice();
             return totalMoney;
         }).mapToDouble(Double::doubleValue).sum();
     }
@@ -93,14 +93,15 @@ public class CartServiceImpl implements CartService{
              CartItem cartItem = existingCart.get();
 
              cartItem.setQuantity(cartItem.getQuantity() + quantity);
-             cartItem.setProductPrice(product.getPrice() * cartItem.getQuantity());
+             cartItem.setCartProductPrice(product.getPrice() * cartItem.getQuantity());
              cartItemRepository.save(cartItem);
          }else {
              CartItem cartItem = new CartItem();
              cartItem.setProduct(product);
              cartItem.setCart(userCart);
              cartItem.setQuantity(quantity);
-             cartItem.setProductPrice(product.getPrice() * quantity);
+             cartItem.setProductPrice(product.getPrice());
+             cartItem.setCartProductPrice(product.getPrice() * quantity);
              cartItem.setDiscount(product.getDiscount());
              cartItemRepository.save(cartItem);
              userCart.getCartItems().add(cartItem);

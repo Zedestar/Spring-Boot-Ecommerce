@@ -1,9 +1,6 @@
 package com.ecommerce.project.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,7 +31,7 @@ public class Cart {
     private Double totalPrice = cartItems.stream().map(cartItem ->
     {
         Double theTotal = 0.0;
-        theTotal += cartItem.getProductPrice();
+        theTotal += cartItem.getCartProductPrice();
         return theTotal;
     }).mapToDouble(Double::doubleValue).sum();
 

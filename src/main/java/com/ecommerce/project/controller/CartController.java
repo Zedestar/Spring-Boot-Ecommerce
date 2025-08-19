@@ -28,4 +28,10 @@ public class CartController {
     public ResponseEntity<List<CartDTO>> gettingAllCartList(){
         return ResponseEntity.ok().body(cartService.allCartList());
     }
+
+    @GetMapping("/public/user/cart/list")
+    public ResponseEntity<List<CartDTO>> gettingAllCartListByUser(){
+        return ResponseEntity.status(HttpStatus.FOUND).body(cartService.getUserCartList());
+    }
+
 }

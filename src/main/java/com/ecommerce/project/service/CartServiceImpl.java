@@ -155,7 +155,7 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public CartItemDTO deleteUserCart(Long cartItemId) {
+    public CartItemDTO deleteUserCartItemProduct(Long cartItemId) {
         User currentUser = GetAuthenticatedUser.loggedInUser();
         CartItem cartItemToDelete = cartItemRepository.findById(cartItemId)
                 .orElseThrow(()->new APIException("This product doesn't exist"));
@@ -167,5 +167,4 @@ public class CartServiceImpl implements CartService{
         theCartToSupportChangingCartItem.setCartItems((List<CartItem>) cartItemToDelete);
         return (CartItemDTO) changingCartItemToDTO(theCartToSupportChangingCartItem);
     }
-
 }

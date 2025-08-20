@@ -9,5 +9,5 @@ public interface CartService {
     CartDTO addProductsToCart(Long productId, Integer quantity);
     List<CartDTO> allCartList();
     List<CartDTO> getUserCartList();
-    CartItemDTO deleteUserCart(Long cartItemId);
+    CartItemDTO deleteUserCartItemProduct(Long cartItemId);
 }

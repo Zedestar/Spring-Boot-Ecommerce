@@ -3,6 +3,7 @@ package com.ecommerce.project.controller;
 
 import com.ecommerce.project.model.Cart;
 import com.ecommerce.project.payload.CartDTO;
+import com.ecommerce.project.payload.CartItemDTO;
 import com.ecommerce.project.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,11 @@ public class CartController {
     @GetMapping("/public/user/cart/list")
     public ResponseEntity<List<CartDTO>> gettingAllCartListByUser(){
         return ResponseEntity.status(HttpStatus.FOUND).body(cartService.getUserCartList());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<CartItemDTO> deleteProductFromCart(@PathVariable Long cartItemId){
+        return ResponseEntity.ok().body(cartService.deleteUserCartItemProduct(cartItemId));
     }
 
 }

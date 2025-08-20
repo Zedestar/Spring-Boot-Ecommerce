@@ -13,6 +13,7 @@ import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.ProductRepository;
 import com.ecommerce.project.security.services.UserDetailsImpl;
 import com.ecommerce.project.utils.GetAuthenticatedUser;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -94,6 +95,7 @@ public class CartServiceImpl implements CartService{
 
              cartItem.setQuantity(cartItem.getQuantity() + quantity);
              cartItem.setCartProductPrice(product.getPrice() * cartItem.getQuantity());
+//             I will insert userCart.setTotalPrice() for making the total cart amount
              cartItemRepository.save(cartItem);
          }else {
              CartItem cartItem = new CartItem();
@@ -105,6 +107,7 @@ public class CartServiceImpl implements CartService{
              cartItem.setDiscount(product.getDiscount());
              cartItemRepository.save(cartItem);
              userCart.getCartItems().add(cartItem);
+//             I will insert userCart.setTotalPrice() for making the total cart amount
          }
 
 
@@ -162,9 +165,11 @@ public class CartServiceImpl implements CartService{
         if(!cartItemToDelete.getCart().getUser().getUserId().equals(currentUser.getUserId())){
             throw new APIException("This product doesn't exist in your cart");
         }
-        cartItemRepository.delete(cartItemToDelete);
         Cart theCartToSupportChangingCartItem = new Cart();
-        theCartToSupportChangingCartItem.setCartItems((List<CartItem>) cartItemToDelete);
-        return (CartItemDTO) changingCartItemToDTO(theCartToSupportChangingCartItem);
+        theCartToSupportChangingCartItem.setCartItems(List.of(cartItemToDelete));
+        CartItemDTO theCartItemForResponse =  changingCartItemToDTO(theCartToSupportChangingCartItem).get(0);
+        cartItemRepository.delete(cartItemToDelete);
+
+        return theCartItemForResponse;
     }
 }

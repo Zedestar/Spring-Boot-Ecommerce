@@ -54,4 +54,13 @@ public class AddressServiceImpl implements AddressService{
                     return addressDTO;
                 }).toList();
     }
+
+    @Override
+    public AddressDTO gettingAddressById(Long addressId) {
+        Address address = addressRepository.findByAddressId(addressId)
+                .orElseThrow(()-> new APIException("The address with id " + addressId + " does not exist"));
+        AddressDTO addressDTO = modelMapper.map(address, AddressDTO.class);
+        addressDTO.setUser(modelMapper.map(address.getUser(), UserDTO.class));
+        return addressDTO;
+    }
 }

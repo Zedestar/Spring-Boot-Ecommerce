@@ -46,14 +46,12 @@ public class AddressServiceImpl implements AddressService{
         if(addressList.isEmpty()){
             throw new APIException("No address found");
         }
-        List<AddressDTO> addressDTOList = new ArrayList<>();
-        addressList.stream()
+
+        return addressList.stream()
                 .map(address -> {
                     AddressDTO addressDTO = modelMapper.map(address, AddressDTO.class);
                     addressDTO.setUser(modelMapper.map(address.getUser(), UserDTO.class));
                     return addressDTO;
                 }).toList();
-
-        return addressDTOList;
     }
 }

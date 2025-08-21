@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class AddressController {
@@ -21,5 +23,10 @@ public class AddressController {
     ResponseEntity<AddressDTO> createAddress(@Valid @RequestBody AddressDTO addressDTO){
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(addressService.createAddress(addressDTO));
+    }
+
+    @GetMapping("/admin/get/all/addresses")
+    ResponseEntity<List<AddressDTO>> getAllAddresses(){
+        return ResponseEntity.ok().body(addressService.listingAllAddresses());
     }
 }

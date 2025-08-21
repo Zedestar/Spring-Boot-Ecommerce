@@ -4,10 +4,13 @@ import com.ecommerce.project.exceptions.APIException;
 import com.ecommerce.project.model.AppRole;
 import com.ecommerce.project.model.Role;
 import com.ecommerce.project.model.User;
+import com.ecommerce.project.payload.UserDTO;
 import com.ecommerce.project.repositories.RoleRepository;
 import com.ecommerce.project.repositories.UserRepository;
 import com.ecommerce.project.security.request.SignupRequest;
 import com.ecommerce.project.security.services.UserDetailsImpl;
+import com.ecommerce.project.utils.GetAuthenticatedUser;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +30,9 @@ public class UseServiceImpl implements UserService{
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     public String SigningUp(SignupRequest signupRequest) {
@@ -69,8 +75,10 @@ public class UseServiceImpl implements UserService{
     }
 
     @Override
-    public UserDetailsImpl gettingUserInformation() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserDetailsImpl)  authentication.getPrincipal();
+    public UserDTO gettingUserInformation() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        return (UserDetailsImpl)  authentication.getPrincipal();
+        User loggedUser = GetAuthenticatedUser.loggedInUser();
+        return modelMapper.map(loggedUser,UserDTO.class);
     }
 }

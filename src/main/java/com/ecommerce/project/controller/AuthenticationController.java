@@ -1,6 +1,7 @@
 package com.ecommerce.project.controller;
 
 
+import com.ecommerce.project.payload.UserDTO;
 import com.ecommerce.project.security.jwt.JwtUtils;
 import com.ecommerce.project.security.request.LoginRequest;
 import com.ecommerce.project.security.request.SignupRequest;
@@ -78,7 +79,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/user/info")
-    public ResponseEntity<UserDetailsImpl> gettingUserInformation(){
+    public ResponseEntity<UserDTO> gettingUserInformation(){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.gettingUserInformation());
     }
 

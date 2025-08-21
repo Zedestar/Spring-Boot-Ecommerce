@@ -34,4 +34,9 @@ public class AddressController {
     ResponseEntity<AddressDTO> getAddressById(@PathVariable Long addressId){
         return ResponseEntity.ok().body(addressService.gettingAddressById(addressId));
     }
+
+    @GetMapping("/public/logged/user/address")
+    ResponseEntity<List<AddressDTO>> getLoggedInUserAddress(){
+        return ResponseEntity.ok().body(addressService.gettingAddressByLoggedInUser());
+    }
 }

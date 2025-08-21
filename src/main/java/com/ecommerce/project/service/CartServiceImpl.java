@@ -13,7 +13,7 @@ import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.ProductRepository;
 import com.ecommerce.project.security.services.UserDetailsImpl;
 import com.ecommerce.project.utils.GetAuthenticatedUser;
-import jakarta.transaction.Transactional;
+//import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

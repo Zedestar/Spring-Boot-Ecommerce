@@ -34,7 +34,7 @@ public class Address {
 
 
     @NotBlank(message = "Enter the build number")
-    @Size(min = 5, message = "The build number must have not less than 5 characters")
+    @Size(min = 3, message = "The build number must have not less than 3 characters")
     private String buildNumber;
 
 

@@ -1,8 +1,12 @@
 package com.ecommerce.project.service;
 
+import com.ecommerce.project.exceptions.APIException;
 import com.ecommerce.project.model.Address;
+import com.ecommerce.project.model.User;
 import com.ecommerce.project.payload.AddressDTO;
+import com.ecommerce.project.payload.UserDTO;
 import com.ecommerce.project.repositories.AddressRepository;
+import com.ecommerce.project.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +19,21 @@ public class AddressServiceImpl implements AddressService{
     AddressRepository addressRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Override
     public AddressDTO createAddress(AddressDTO addressDTO) {
+        User userCart = userRepository.findByUserId((addressDTO.getUser().getUserId()));
+        if(userCart==null){
+            throw new APIException("The user doesn't exist");
+        }
         Address addressToBeCreated = modelMapper.map(addressDTO, Address.class);
+        addressToBeCreated.setUser(userCart);
         addressRepository.save(addressToBeCreated);
+        addressDTO.setUser(modelMapper.map(userCart,  UserDTO.class));
         return addressDTO;
     }
 }

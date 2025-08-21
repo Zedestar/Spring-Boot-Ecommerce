@@ -7,6 +7,7 @@ import com.ecommerce.project.payload.AddressDTO;
 import com.ecommerce.project.payload.UserDTO;
 import com.ecommerce.project.repositories.AddressRepository;
 import com.ecommerce.project.repositories.UserRepository;
+import com.ecommerce.project.utils.GetAuthenticatedUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,5 +63,21 @@ public class AddressServiceImpl implements AddressService{
         AddressDTO addressDTO = modelMapper.map(address, AddressDTO.class);
         addressDTO.setUser(modelMapper.map(address.getUser(), UserDTO.class));
         return addressDTO;
+    }
+
+    @Override
+    public List<AddressDTO> gettingAddressByLoggedInUser() {
+        User user = GetAuthenticatedUser.loggedInUser();
+        List<Address> addressList =  addressRepository.findAllByUser_UserId((user.getUserId()));
+        if(addressList.isEmpty()){
+            throw new APIException("You haven't created any address");
+        }
+
+        return addressList.stream()
+                .map(address -> {
+                    AddressDTO addressDTO = modelMapper.map(address, AddressDTO.class);
+                    addressDTO.setUser(modelMapper.map(address.getUser(), UserDTO.class));
+                    return addressDTO;
+                }).toList();
     }
 }

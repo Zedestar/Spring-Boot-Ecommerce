@@ -39,4 +39,9 @@ public class AddressController {
     ResponseEntity<List<AddressDTO>> getLoggedInUserAddress(){
         return ResponseEntity.ok().body(addressService.gettingAddressByLoggedInUser());
     }
+
+    @DeleteMapping("/public/delete/address/{addressId}")
+    ResponseEntity<String> deleteAddress(@PathVariable Long addressId){
+        return ResponseEntity.ok().body(addressService.deleteAddress(addressId));
+    }
 }

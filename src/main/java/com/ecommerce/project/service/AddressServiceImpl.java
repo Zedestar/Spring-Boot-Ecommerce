@@ -80,4 +80,16 @@ public class AddressServiceImpl implements AddressService{
                     return addressDTO;
                 }).toList();
     }
+
+    @Override
+    public String deleteAddress(Long addressId) {
+        User loggedUser =  GetAuthenticatedUser.loggedInUser();
+        Address addressToDelete = addressRepository.findByAddressId(addressId)
+                .orElseThrow(()-> new APIException("Address with id " + addressId + " does not exist"));
+        if(!addressToDelete.getUser().getUserId().equals(loggedUser.getUserId())) {
+            throw new APIException("This address is not yours, you cannot delete it");
+        }
+        addressRepository.delete(addressToDelete);
+        return "The address has been deleted successfully";
+    }
 }

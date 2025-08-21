@@ -9,4 +9,5 @@ public interface AddressService {
     List<AddressDTO> listingAllAddresses();
     AddressDTO gettingAddressById(Long addressId);
     List<AddressDTO> gettingAddressByLoggedInUser();
+    String deleteAddress(Long addressId);
 }

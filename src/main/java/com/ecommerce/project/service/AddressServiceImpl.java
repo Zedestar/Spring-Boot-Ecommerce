@@ -92,4 +92,33 @@ public class AddressServiceImpl implements AddressService{
         addressRepository.delete(addressToDelete);
         return "The address has been deleted successfully";
     }
+
+    @Override
+    public AddressDTO updateAddress(Long addressId, AddressDTO addressDTO) {
+        User loggedUser =  GetAuthenticatedUser.loggedInUser();
+        Address addressToUpdate = addressRepository.findByAddressId(addressId)
+                .orElseThrow(()-> new APIException("The address you tried to update does not exist"));
+        if(!addressToUpdate.getUser().getUserId().equals(loggedUser.getUserId())) {
+            throw new APIException("This address is not yours, you cannot update it");
+        }
+        if (addressDTO.getRegion() != null && !addressDTO.getRegion().isBlank()) {
+            addressToUpdate.setRegion(addressDTO.getRegion());
+        }
+        if (addressDTO.getCity() != null && !addressDTO.getCity().isBlank()) {
+            addressToUpdate.setCity(addressDTO.getCity());
+        }
+        if (addressDTO.getStreet() != null && !addressDTO.getStreet().isBlank()) {
+            addressToUpdate.setStreet(addressDTO.getStreet());
+        }
+        if (addressDTO.getBuildNumber() != null && !addressDTO.getBuildNumber().isBlank()) {
+            addressToUpdate.setBuildNumber(addressDTO.getBuildNumber());
+        }
+        if (addressDTO.getPostalCode() != null && !addressDTO.getPostalCode().isBlank()) {
+            addressToUpdate.setPostalCode(addressDTO.getPostalCode());
+        }
+        addressRepository.save(addressToUpdate);
+        AddressDTO theAddressDTOToReturn = modelMapper.map(addressToUpdate, AddressDTO.class);
+        theAddressDTOToReturn.setUser(modelMapper.map(addressToUpdate.getUser(), UserDTO.class));
+        return theAddressDTOToReturn;
+    }
 }

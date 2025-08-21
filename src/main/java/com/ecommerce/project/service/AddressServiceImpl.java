@@ -11,6 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class AddressServiceImpl implements AddressService{
@@ -35,5 +38,22 @@ public class AddressServiceImpl implements AddressService{
         addressRepository.save(addressToBeCreated);
         addressDTO.setUser(modelMapper.map(userCart,  UserDTO.class));
         return addressDTO;
+    }
+
+    @Override
+    public List<AddressDTO> listingAllAddresses() {
+        List<Address> addressList = addressRepository.findAll();
+        if(addressList.isEmpty()){
+            throw new APIException("No address found");
+        }
+        List<AddressDTO> addressDTOList = new ArrayList<>();
+        addressList.stream()
+                .map(address -> {
+                    AddressDTO addressDTO = modelMapper.map(address, AddressDTO.class);
+                    addressDTO.setUser(modelMapper.map(address.getUser(), UserDTO.class));
+                    return addressDTO;
+                }).toList();
+
+        return addressDTOList;
     }
 }

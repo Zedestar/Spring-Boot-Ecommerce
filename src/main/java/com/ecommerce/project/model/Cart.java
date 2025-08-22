@@ -28,11 +28,9 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.MERGE}, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
-    private Double totalPrice = cartItems.stream().map(cartItem ->
-    {
-        Double theTotal = 0.0;
-        theTotal += cartItem.getCartProductPrice();
-        return theTotal;
-    }).mapToDouble(Double::doubleValue).sum();
+    private Double totalPrice = 0.0;
+
+    @OneToMany(mappedBy = "cart", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.MERGE}, orphanRemoval = false)
+    private List<Order> orders = new ArrayList<>();
 
 }

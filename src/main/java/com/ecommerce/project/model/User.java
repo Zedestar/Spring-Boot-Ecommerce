@@ -12,7 +12,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -59,5 +61,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private Set<Address>  addresses = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
 
 }

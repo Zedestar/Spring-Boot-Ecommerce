@@ -13,7 +13,7 @@ public class OrderDTO {
     private String phoneNumber;
     private Double amount;
     private Boolean status;
-    private UserDTO user;      // reference to user
-    private CartDTO cart;      // reference to cart
-    private AddressDTO addressDTO;   // reference to address
+    private UserDTO user;
+    private CartDTO cart;
+    private AddressDTO addressDTO;
 }

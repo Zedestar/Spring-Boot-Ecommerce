@@ -5,12 +5,16 @@ import com.ecommerce.project.model.Address;
 import com.ecommerce.project.model.Cart;
 import com.ecommerce.project.model.Order;
 import com.ecommerce.project.model.User;
+import com.ecommerce.project.payload.OrderDTO;
 import com.ecommerce.project.repositories.AddressRepository;
 import com.ecommerce.project.repositories.CartRepository;
 import com.ecommerce.project.repositories.OrderRepository;
 import com.ecommerce.project.utils.GetAuthenticatedUser;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -24,6 +28,9 @@ public class OrderServiceImpl implements OrderService{
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
     public String createOrder(Long cartId, Long addressId, String phoneNumber) {
@@ -50,5 +57,16 @@ public class OrderServiceImpl implements OrderService{
 
         orderRepository.save(theOrder);
         return "The order has beed created successfully";
+    }
+
+    @Override
+    public List<OrderDTO> getAllOrdersForLoggedUser() {
+        User loggedUser = GetAuthenticatedUser.loggedInUser();
+        List<Order> userOrders = orderRepository.findAllByUser_UserId(loggedUser.getUserId())
+                .orElseThrow(()->new APIException("You haven't created any order yet"));
+
+        List<OrderDTO> userOrderDTO = userOrders.stream()
+                .map(order -> modelMapper.map(order, OrderDTO.class)).toList();
+        return userOrderDTO;
     }
 }

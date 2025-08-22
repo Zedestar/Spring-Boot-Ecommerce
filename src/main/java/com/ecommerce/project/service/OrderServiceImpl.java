@@ -33,6 +33,14 @@ public class OrderServiceImpl implements OrderService{
         Address addressToAddToOrder = addressRepository.findByAddressId(addressId)
                 .orElseThrow(()->new APIException("The address DoesNot exist"));
 
+        if(!cartToAddToOrder.getUser().getUserId().equals(loggedUser.getUserId())){
+            throw new APIException("You can't add another user's cart");
+        }
+
+        if (!addressToAddToOrder.getUser().getUserId().equals(loggedUser.getUserId())) {
+            throw new APIException("You can't add another user's address");
+        }
+
         Order theOrder = new Order();
         theOrder.setCart(cartToAddToOrder);
         theOrder.setAddress(addressToAddToOrder);
